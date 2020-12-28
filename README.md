@@ -7,7 +7,7 @@
 </p>
 
 ```diff
-+ A GitHub Action for posting the result of a GitHub Action job to a Slack channel, 
++ A GitHub Action for posting the result of a GitHub Action job to a Slack channel,
 + via a given webhook.
 ```
 * Inspired by https://github.com/8398a7/action-slack
@@ -46,9 +46,13 @@ by a custom Slack App in your Slack workspace.
 
 The status of the running GitHub Action job.
 
-
 ## webhook?
 
 * [To create the webhook used by this GitHub Action, follow the steps in this doc and create a custom Slack App for your Slack workspace.](https://api.slack.com/messaging/webhooks)
 
+## pushing new tag?
 
+```bash
+git tag -m "<message>" <version>
+git push --tags
+```

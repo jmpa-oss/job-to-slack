@@ -6,7 +6,7 @@ die() { echo "$1" >&2; exit "${2:-1}"; }
 diejq() { echo "$1" >&2; jq '.' <<< "$2"; exit "${3:-1}"; }
 
 # check deps
-deps=(curl)
+deps=(curl jq)
 for dep in "${deps[@]}"; do
   hash "$dep" 2>/dev/null || missing+=("$dep")
 done
