@@ -4,7 +4,7 @@ description: Post a message to a Slack channel
 inputs:
   token:
     description: >-
-      The Slack token used to authenticate to the Slack API. 
+      The Slack token used to authenticate to the Slack API.
       Ideally this should be retrieved from a custom Slack App
       in the Slack workspace.
     required: true
@@ -20,7 +20,3 @@ inputs:
 runs:
   using: docker
   image: Dockerfile
-  args:
-    - ${{ inputs.token }}
-    - ${{ inputs.channel }}
-    - ${{ inputs.message }}
