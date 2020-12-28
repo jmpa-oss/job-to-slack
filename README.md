@@ -1,4 +1,4 @@
-[![update](https://github.com/jmpa-oss/job-to-slack/workflows/update/badge.svg)](https://github.com/jmpa-oss/job-to-slack/actions?query=workflow%3Aupdate)
+[![update](https://github.com/jmpa-oss/job-to-slack/workflows/update/badge.svg)](https://github.com/jmpa-oss/job-to-slack/actions?query=workflow%3Atest)
 
 # job-to-slack
 
@@ -7,7 +7,8 @@
 </p>
 
 ```diff
-+ A GitHub Action for posting the result of a GitHub Action job to a Slack channel, via a given webhook.
++ A GitHub Action for posting the result of a GitHub Action job to a Slack channel, 
++ via a given webhook.
 ```
 * Inspired by https://github.com/8398a7/action-slack
 * To learn about creating a custom GitHub Action like this, see [this doc](https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/creating-a-docker-container-action).
