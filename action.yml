@@ -1,13 +1,23 @@
-name: slacker
-description: Post a message to a Slack channel
+name: job-to-slack
+description: |
+  Posts the result of a GitHub Action to Slack via a given webhook.
+author: jcleal
 
 inputs:
   webhook:
-    description: The Slack webhook to post to
+    description: |
+      The Slack webhook to post to; This is created / managed
+      by a custom Slack App in your workspace.
     required: true
   status:
-    description: The status of the GitHub Action.
+    description: |
+      The status of the running GitHub Action job.
     required: true
+
 runs:
   using: docker
   image: Dockerfile
+
+branding:
+  icon: bell
+  color: purple

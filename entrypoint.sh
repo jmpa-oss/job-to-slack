@@ -15,7 +15,7 @@ if [[ ${#missing[@]} -ne 0 ]]; then
   die "missing dep${s}: ${missing[*]}"
 fi
 
-# parameters
+# input parameters
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepswith
 webhook="$INPUT_WEBHOOK"
 status="$INPUT_STATUS"
@@ -29,22 +29,31 @@ if [[ ${#missing[@]} -ne 0 ]]; then
   die "missing input parameter${s}: ${missing[*]}"
 fi
 
-# extract vars
-commit="${GITHUB_SHA:0:7}"
-repo="$GITHUB_REPOSITORY"
-workflow="$GITHUB_WORKFLOW"
+# extract / default vars (for local testing)
+commit="${GITHUB_SHA:0:7}" # use shorthand commit
+commit="${commit:-commit}"
+repo="${GITHUB_REPOSITORY:-repo}"
+workflow="${GITHUB_WORKFLOW:-workflow}"
+ref="${GITHUB_REF:-ref}"
+event="${GITHUB_EVENT_NAME:-event}"
+actor="${GITHUB_ACTOR:-actor}"
+runId="${GITHUB_RUN_ID:-runId}"
 
 # determine message status
-msg=""
-color=""
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions#job-context
+msg=""; color=""
 case "$status" in
 success)
   msg=":thumbsup::skin-tone-2: *GitHub Action succeeded!*"
   color="#44E544"
   ;;
-fail)
+failure)
   msg=":thumbsdown::skin-tone-2: *GitHub Action failed!*"
   color="#FF4C4C"
+  ;;
+cancelled)
+  msg=":hand::skin-tone-2: *GitHub Action cancelled!*"
+  color="#FF7F50"
   ;;
 *) die "missing $status implementation"
 esac
@@ -52,34 +61,39 @@ esac
 # query to execute
 read -d '' q <<@
 {
-  \"text\": \"$msg\",
-  \"attachments\": [
+  "text": "$msg",
+  "attachments": [
     {
-      \"color\": \"$color\",
-      \"fields\": [
+      "color": "$color",
+      "blocks": [
         {
-          \"title\": \"Repository\",
-          \"value\": \"<https://github.com/$GITHUB_REPOSITORY|$repo>\"
-        },
-        {
-          \"title\": \"Commit\",
-          \"value\": \"<https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA|$commit>\"
-        },
-        {
-          \"title\": \"Action\",
-          \"value\": \"<https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$workflow>\"
-        },
-        {
-          \"title\": \"Triggered by\",
-          \"value\": \"<https://github.com/$GITHUB_ACTOR>\"
-        },
-        {
-          \"title\": \"Branch\",
-          \"value\": \"$GITHUB_REF\"
-        },
-        {
-          \"title\": \"Event\",
-          \"value\": \"$GITHUB_EVENT_NAME\"
+          "type": "section",
+          "fields": [
+            {
+              "type": "mrkdwn",
+              "text": "*Repository:*\\\\n<https://github.com/$repo|$repo>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Commit:*\\\\n<https://github.com/$repo/commit/$commit|$commit>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Action:*\\\\n<https://github.com/$repo/actions/runs/$runId|$workflow>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Triggered by:*\\\\n<https://github.com/$actor>"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Branch:*\\\\n$ref"
+            },
+            {
+              "type": "mrkdwn",
+              "text": "*Event:*\\\\n$event"
+            }
+			    ]
         }
       ]
     }
@@ -87,7 +101,12 @@ read -d '' q <<@
 }
 @
 
-# post message
+# validate query
+[[ $(<<<"$q" jq '. | tojson') ]] \
+  || die "query is an invalid json payload"
+
+# post query to webhook
+# https://api.slack.com/messaging/webhooks
 echo "##[group]Posting message to webhook"
 resp=$(curl -s "$webhook" \
   -H "Content-type: application/json" \

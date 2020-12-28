@@ -1,13 +1,20 @@
-on: [push]
+name: test
+on:
+  push:
+    branches:
+      - main
+      - master
 
 jobs:
   test:
-    name: test
+    name: Test job-notify
     runs-on: ubuntu-20.04
     steps:
-      - name: Test action
-        uses: jmpa-oss/slacker-action@v0.0.7
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test latest version
+        uses: ./
         with:
           webhook: ${{ secrets.SLACK_GITHUB_WEBHOOK_URL }}
           status: ${{ job.status }}
-
