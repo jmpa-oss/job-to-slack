@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Test action
-        uses: jmpa-oss/slacker-action@v0.0.2
+        uses: jmpa-oss/slacker-action@v0.0.3
         with:
           token: ${{ github.actor }}
 
