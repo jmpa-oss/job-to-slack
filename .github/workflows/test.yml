@@ -8,5 +8,5 @@ jobs:
       - name: Test action
         uses: jmpa-oss/slacker-action@v0.0.1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.actor }}
 

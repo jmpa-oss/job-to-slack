@@ -3,6 +3,8 @@
 
 echo "Hello World!"
 
-echo "$1"
+
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepswith
+echo "$INPUT_TOKEN"
 echo "$2"
 echo "$3"
