@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Test action
-        uses: jmpa-oss/slacker-action@v0.0.6
+        uses: jmpa-oss/slacker-action@v0.0.7
         with:
           webhook: ${{ secrets.SLACK_GITHUB_WEBHOOK_URL }}
           status: ${{ job.status }}
