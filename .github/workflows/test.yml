@@ -8,5 +8,6 @@ jobs:
       - name: Test action
         uses: jmpa-oss/slacker-action@v0.0.6
         with:
-          token: ${{ github.actor }}
+          webhook: ${{ secrets.SLACK_GITHUB_WEBHOOK_URL }}
+          status: ${{ job.status }}
 
