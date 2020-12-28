@@ -3,13 +3,19 @@ description: Post a message to a Slack channel
 
 inputs:
   token:
-    description: The Slack token used to authenticate to the Slack API. Ideally this should be retrieved from a Slack App.
+    description: >-
+      The Slack token used to authenticate to the Slack API. 
+      Ideally this should be retrieved from a custom Slack App
+      in the Slack workspace.
     required: true
   channel:
-    description: The Slack channel to post the message to.
+    description: >-
+      The Slack channel to post the message to.
     required: true
   message:
-    description: The message to post to the given Slack channel.
+    description: >-
+      The message to post to the given Slack channel.
+    required: false
 
 runs:
   using: docker
