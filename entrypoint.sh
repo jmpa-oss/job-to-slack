@@ -50,7 +50,6 @@ fail)
 esac
 
 # query to execute
-# FIXME figure out a way to do this without escaping the quotes in this variable.
 read -d '' q <<@
 {
   \"text\": \"$msg\",
@@ -59,7 +58,7 @@ read -d '' q <<@
       \"color\": \"$color\",
       \"fields\": [
         {
-          \"title\": \"Repo\",
+          \"title\": \"Repository\",
           \"value\": \"<https://github.com/$GITHUB_REPOSITORY|$repo>\"
         },
         {
@@ -68,7 +67,19 @@ read -d '' q <<@
         },
         {
           \"title\": \"Action\",
-          \"value\": \"<https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_ACTION|$workflow>\"
+          \"value\": \"<https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$workflow>\"
+        },
+        {
+          \"title\": \"Triggered by\",
+          \"value\": \"<https://github.com/$GITHUB_ACTOR>\"
+        },
+        {
+          \"title\": \"Branch\",
+          \"value\": \"$GITHUB_REF\"
+        },
+        {
+          \"title\": \"Event\",
+          \"value\": \"$GITHUB_EVENT_NAME\"
         }
       ]
     }
@@ -77,9 +88,11 @@ read -d '' q <<@
 @
 
 # post message
+echo "##[group]Posting message to webhook"
 resp=$(curl -s "$webhook" \
   -H "Content-type: application/json" \
   -d "$q") \
   || die "failed curl to post message to webhook"
 [[ "$resp" != "ok" ]] \
     && die "non-successful message returned when posting message to webhook: $resp"
+echo "##[endgroup]"
