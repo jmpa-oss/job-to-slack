@@ -1,0 +1,13 @@
+on: [push]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Test action
+        uses: jmpa-oss/slacker-action@v0.0.1
+        with:
+          token: "xxxxxxxxxxx"
+          channel: "23423423df"
+          message: "hello world"
