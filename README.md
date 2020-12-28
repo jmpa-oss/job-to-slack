@@ -1,4 +1,4 @@
-[![update](https://github.com/jmpa-oss/job-to-slack/workflows/update/badge.svg)](https://github.com/jmpa-oss/job-to-slack/actions?query=workflow%3Atest)
+[![test](https://github.com/jmpa-oss/job-to-slack/workflows/test/badge.svg)](https://github.com/jmpa-oss/job-to-slack/actions?query=workflow%3Atest)
 
 # job-to-slack
 
