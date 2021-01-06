@@ -1,4 +1,4 @@
-name: test
+name: cicd
 on:
   push:
     branches:
@@ -7,11 +7,16 @@ on:
 
 jobs:
   test:
-    name: Test job-notify
+    name: Run CI/CD
     runs-on: ubuntu-20.04
+    if: |
+      !contains(github.event.head_commit.message, 'skip ci')
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Lint
+        uses: jmpa-oss/linter@v0.0.1
 
       - name: Test latest version
         uses: ./
