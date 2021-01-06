@@ -25,6 +25,9 @@ jobs:
       - name: Lint
         uses: jmpa-oss/linter@v0.0.1
 
+      - name: Trigger update for repositories using this template
+        run: ./bin/update-templates.sh
+
       - name: Test latest version of job-to-slack
         uses: ./
         with:
