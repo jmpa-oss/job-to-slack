@@ -59,6 +59,7 @@ cancelled)
 esac
 
 # query to execute
+# shellcheck disable=SC2162
 read -d '' q <<@
 {
   "text": "$msg",
