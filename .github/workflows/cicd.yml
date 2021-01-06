@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Run CI/CD
+    name: CI/CD for job-to-slack
     runs-on: ubuntu-20.04
     if: |
       !contains(github.event.head_commit.message, 'skip ci')
@@ -15,10 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: ap-southeast-2
+
       - name: Lint
         uses: jmpa-oss/linter@v0.0.1
 
-      - name: Test latest version
+      - name: Test latest version of job-to-slack
         uses: ./
         with:
           webhook: ${{ secrets.SLACK_GITHUB_WEBHOOK_URL }}
